@@ -27,7 +27,6 @@ class Router
         'tasks' => ['handler' => 'Pages\\Task'],
         'tasks/add' => [
             'handler' => 'Pages\\Task',
-            'auth' => self::AUTH_REQUIRED,
         ],
         'tasks/change' => [
             'handler' => 'Pages\\Task',
@@ -47,11 +46,10 @@ class Router
      */
     public function handle($request)
     {
-        $page = $request->page ?: 'index';
-        if (empty($this->routes[$page])) {
-            throw new \Exception(sprintf('Page %s not found', $page));
+        if (empty($this->routes[$request->page])) {
+            throw new \Exception(sprintf('Page %s not found', $request->page));
         }
-        $options = $this->routes[$page];
+        $options = $this->routes[$request->page];
         $className = '\\TestApp\\'.$options['handler'];
 
         if (isset($options['auth'])

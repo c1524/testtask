@@ -39,5 +39,6 @@ class Request
         $this->post = $_POST;
         $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $this->page = preg_replace('/^\//', '', $path);
+        $this->page = !empty($this->page) ? $this->page : 'index';
     }
 }

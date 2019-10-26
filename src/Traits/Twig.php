@@ -37,8 +37,25 @@ trait Twig
      *
      * @return string    Return rendered page code.
      */
-    protected function renderPage($alias, $params)
+    protected function renderPage($alias, $params = [])
     {
+        $alerts = empty($_SESSION['twigAlerts']) ? [] : $_SESSION['twigAlerts'];
+        $_SESSION['twigAlerts'] = [];
+        $params = array_merge($params, ['alerts' => $alerts]);
         return $this->initTwig()->render($alias.'.twig', $params);
+    }
+
+    /**
+     * Add alerts to show into next rendered page.
+     *
+     * @param string $type       Alert type: 'success', 'info', 'danger'.
+     * @param string $message    Message of alert.
+     */
+    protected function addAlert($type, $message)
+    {
+        $_SESSION['twigAlerts'][] = [
+            'type' => $type,
+            'message' => $message,
+        ];
     }
 }

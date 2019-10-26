@@ -35,9 +35,9 @@
   {% endfor %}
     </tbody>
   </table>
-  {% if isAuthorized %}
-    <p><a class="page-link" href="/tasks/add">Add new task</a></p>
-  {% endif %}
+
+  <p><a class="page-link" href="/tasks/add">Add new task</a></p>
+
   <ul class="pagination justify-content-end">
     {% for p in range(1, pages) %}
       <li class="page-item {{  p == pageCurrent ? 'active' : '' }}">

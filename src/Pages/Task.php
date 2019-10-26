@@ -99,19 +99,26 @@ class Task
                     $errors[] = 'email_invalid';
                 }
             }
-            if (empty($task->text = trim($request->post['text']))) {
+            if (empty($text = trim($request->post['text']))) {
                 $errors[] = 'no_text';
             }
             if ($isChangeMode) {
                 if (!empty($request->post['status'])) {
                     $task->status = TaskModel::STATUS_RESOLVED;
                 }
-                $task->changedBy = Authorization::ADMIN_LOGIN;
+                if ($task->text !== $text) {
+                    $task->changedBy = Authorization::ADMIN_LOGIN;
+                }
             }
-
+            $task->text = $text;
 
             if (empty($errors)) {
                 (new TaskRepository())->save($task);
+                $this->addAlert('success',
+                    $isChangeMode
+                        ? 'Task changed'
+                        : 'Task successfully created'
+                );
                 header('Location: /tasks');
                 exit;
             }
