@@ -1,0 +1,29 @@
+{% extends "base.twig" %}
+
+{% block content %}
+{% autoescape %}
+  <h2>Login</h2>
+  <p>Please enter your username and password.</p>
+
+  <form method="POST">
+    <div class="form-group">
+      <label for="login">Username:</label>
+      <input type="text" class="form-control" placeholder="Enter username" name="login" id="login" value="{{login}}">
+      {% if 'login_unknown' in errors %}
+        <div class="text-danger">Please fill out this field.</div>
+      {% endif %}
+    </div>
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" class="form-control" placeholder="Enter password" name="password" id="password">
+      {% if 'password_unknown' in errors %}
+        <div class="text-danger">Please fill out this field.</div>
+      {% endif %}
+    </div>
+    <button type="submit" name="doAuth" class="btn btn-primary">Submit</button>
+    {% if 'auth_fail' in errors %}
+      <div class="text-danger">Invalid login or password.</div>
+    {% endif %}
+  </form>
+{% endautoescape %}
+{% endblock %}

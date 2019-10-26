@@ -1,0 +1,48 @@
+{% extends "base.twig" %}
+
+{% block content %}
+{% autoescape %}
+  <h2>{{ isChangeMode ? 'Change task' : 'Add new task' }}</h2>
+  {% if isChangeMode %}
+    <p>Please fill all fields to update task</p>
+  {% else %}
+    <p>Please fill all fields to add new task</p>
+  {% endif %}
+
+
+  <form method="POST">
+    <div class="form-group">
+      <label for="username">Assign to user:</label>
+      <input type="text" class="form-control" placeholder="Enter username" name="username" id="username" value="{{task.username}}" {{ isChangeMode ? 'disabled="disabled"' : '' }}>
+      {% if 'no_username' in errors %}
+        <div class="text-danger">Please fill out this field.</div>
+      {% endif %}
+    </div>
+    <div class="form-group">
+      <label for="email">User`s email:</label>
+      <input type="text" class="form-control" placeholder="Enter email" name="email" id="email" value="{{task.email}}" {{ isChangeMode ? 'disabled="disabled"' : '' }}>
+      {% if 'no_email' in errors %}
+        <div class="text-danger">Please fill out this field.</div>
+      {% endif %}
+      {% if 'email_invalid' in errors %}
+        <div class="text-danger">Email incorrect.</div>
+      {% endif %}
+    </div>
+    <div class="form-group">
+      <label for="text">Task description:</label>
+      <textarea class="form-control" placeholder="Enter task description" name="text" id="text">{{task.text}}</textarea>
+      {% if 'no_text' in errors %}
+        <div class="text-danger">Please fill out this field.</div>
+      {% endif %}
+    </div>
+    {% if isChangeMode %}
+      <div class="form-group">
+        <label for="status">Resolved:</label>
+        <input type="checkbox" class="form-control" name="status" id="status" value="1" {{ task.status == 1 ? 'checked="checked"' : '' }}" />
+      </div>
+    {% endif %}
+
+    <button type="submit" name="saveTask" class="btn btn-primary">{{ isChangeMode ? 'Change task' : 'Add task' }}</button>
+  </form>
+{% endautoescape %}
+{% endblock %}

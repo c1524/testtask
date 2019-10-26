@@ -1,0 +1,16 @@
+{
+    "require": {
+        "twig/twig": "^1.42"
+    },
+    "authors": [
+        {
+            "name": "Yak",
+            "email": "aleksandr.yakushev@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "TestApp\\": "src/"
+        }
+    }
+}

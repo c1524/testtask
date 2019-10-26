@@ -1,0 +1,49 @@
+{% extends "base.twig" %}
+
+{% block content %}
+{% autoescape %}
+  <h2>Tasks list</h2>
+  <p>Display tasks list.</p>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th><a href="/tasks?from={{ from }}&sort_by=username&sort_dir={{ ((sortBy == 'username') and (sortDir == 'asc')) ? 'desc' : 'asc'}}">Username</a></th>
+      <th><a href="/tasks?from={{ from }}&sort_by=email&sort_dir={{ ((sortBy == 'email') and (sortDir == 'asc')) ? 'desc' : 'asc'}}">Email</a></th>
+      <th><a href="/tasks?from={{ from }}&sort_by=status&sort_dir={{ ((sortBy == 'status') and (sortDir == 'asc')) ? 'desc' : 'asc'}}">Status</a></th>
+      <th>Text</th>
+      {% if isAuthorized %}
+        <th>Action</th>
+      {% endif %}
+    </tr>
+    </thead>
+    <tbody>
+  {% for task in tasks %}
+    <tr>
+      <td>{{ task.username }}</td>
+      <td>{{ task.email }}</td>
+      <td>{% if task.status == 1 %}
+          Resolved {{ task.changedBy != '' ? '(edit by ' ~ task.changedBy ~ ')' : '' }}
+        {% else %} New
+        {% endif %}
+      </td>
+      <td>{{ task.text }}</td>
+      {% if isAuthorized %}
+        <td><a href="/tasks/change?id={{ task.id }}">Change</a></td>
+      {% endif %}
+    </tr>
+  {% endfor %}
+    </tbody>
+  </table>
+  {% if isAuthorized %}
+    <p><a class="page-link" href="/tasks/add">Add new task</a></p>
+  {% endif %}
+  <ul class="pagination justify-content-end">
+    {% for p in range(1, pages) %}
+      <li class="page-item {{  p == pageCurrent ? 'active' : '' }}">
+        <a class="page-link" href="/tasks?from={{ (p - 1) * perPage }}&sort_by={{ sortBy }}&sort_dir={{ sortDir }}">{{ p }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endautoescape %}
+{% endblock %}
